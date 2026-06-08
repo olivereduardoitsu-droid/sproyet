@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sproyets - Gestor de Proyectos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Importamos la tipografía Inter para máxima legibilidad y diseño premium -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Configuración dinámica de colores para Tailwind usando variables CSS -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        white: 'var(--color-white)',
+                        slate: {
+                            50: 'var(--color-slate-50)',
+                            100: 'var(--color-slate-100)',
+                        },
+                        zinc: {
+                            50: 'var(--color-zinc-50)',
+                            100: 'var(--color-zinc-100)',
+                            200: 'var(--color-zinc-200)',
+                            300: 'var(--color-zinc-300)',
+                            400: 'var(--color-zinc-400)',
+                            500: 'var(--color-zinc-500)',
+                            600: 'var(--color-zinc-600)',
+                            700: 'var(--color-zinc-700)',
+                            800: 'var(--color-zinc-800)',
+                            900: 'var(--color-zinc-900)',
+                            950: 'var(--color-zinc-950)',
+                        },
+                        red: {
+                            50: 'var(--color-red-50)',
+                            400: 'var(--color-red-400)',
+                            500: 'var(--color-red-500)',
+                            600: 'var(--color-red-600)',
+                            700: 'var(--color-red-700)',
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+
+    <style>
+        :root {
+            /* TEMA CLARO (Default) */
+            --color-white: #ffffff;
+            --color-slate-50: #f8fafc;
+            --color-slate-100: #f1f5f9;
+            --color-zinc-50: #fafafa;
+            --color-zinc-100: #f4f4f5;
+            --color-zinc-200: #e4e4e7;
+            --color-zinc-300: #d4d4d8;
+            --color-zinc-400: #a1a1aa;
+            --color-zinc-500: #71717a;
+            --color-zinc-600: #52525b;
+            --color-zinc-700: #3f3f46;
+            --color-zinc-800: #27272a;
+            --color-zinc-900: #18181b;
+            --color-zinc-950: #09090b;
+            
+            --color-red-50: #fef2f2;
+            --color-red-400: #f87171;
+            --color-red-500: #ef4444;
+            --color-red-600: #dc2626;
+            --color-red-700: #b91c1c;
+
+            --particle-color: rgba(239, 68, 68, 0.15);
+        }
+
+        /* TEMA OSCURO (Slate Neutro) */
+        body.theme-dark {
+            --color-white: #1e293b;
+            --color-slate-50: #0f172a;
+            --color-slate-100: #0b0f19;
+            --color-zinc-50: #1e293b;
+            --color-zinc-100: #334155;
+            --color-zinc-200: #475569;
+            --color-zinc-300: #64748b;
+            --color-zinc-400: #94a3b8;
+            --color-zinc-500: #cbd5e1;
+            --color-zinc-600: #e2e8f0;
+            --color-zinc-700: #f1f5f9;
+            --color-zinc-800: #f8fafc;
+            --color-zinc-900: #ffffff;
+            --color-zinc-950: #ffffff;
+            
+            --color-red-50: #451a1a;
+            --color-red-400: #fca5a5;
+            --color-red-500: #ef4444;
+            --color-red-600: #f87171;
+            --color-red-700: #fca5a5;
+
+            --particle-color: rgba(239, 68, 68, 0.22);
+        }
+
+        /* TEMA NEGRO CON MORADO */
+        body.theme-black-purple {
+            --color-white: #121214;
+            --color-slate-50: #000000;
+            --color-slate-100: #0a0a0c;
+            --color-zinc-50: #1a1a1e;
+            --color-zinc-100: #26262b;
+            --color-zinc-200: #3b0764;
+            --color-zinc-300: #581c87;
+            --color-zinc-400: #a78bfa;
+            --color-zinc-500: #c084fc;
+            --color-zinc-600: #d8b4fe;
+            --color-zinc-700: #e9d5ff;
+            --color-zinc-800: #f3e8ff;
+            --color-zinc-900: #faf5ff;
+            --color-zinc-950: #ffffff;
+            
+            --color-red-50: #2e0854;
+            --color-red-400: #c084fc;
+            --color-red-500: #a855f7;
+            --color-red-600: #9333ea;
+            --color-red-700: #7e22ce;
+
+            --particle-color: rgba(168, 85, 247, 0.25);
+        }
+
+        /* TEMA VERDE CON MORADO */
+        body.theme-green-purple {
+            --color-white: #064e3b;
+            --color-slate-50: #022c22;
+            --color-slate-100: #011c15;
+            --color-zinc-50: #043e2f;
+            --color-zinc-100: #0c5e49;
+            --color-zinc-200: #4c1d95;
+            --color-zinc-300: #6d28d9;
+            --color-zinc-400: #a78bfa;
+            --color-zinc-500: #c084fc;
+            --color-zinc-600: #d8b4fe;
+            --color-zinc-700: #e9d5ff;
+            --color-zinc-800: #f3e8ff;
+            --color-zinc-900: #ffffff;
+            --color-zinc-950: #ffffff;
+            
+            --color-red-50: #2e0854;
+            --color-red-400: #d8b4fe;
+            --color-red-500: #c084fc;
+            --color-red-600: #a855f7;
+            --color-red-700: #9333ea;
+
+            --particle-color: rgba(192, 132, 252, 0.25);
+        }
+
+        /* TEMA ROSA Y AZUL */
+        body.theme-pink-blue {
+            --color-white: #ffffff;
+            --color-slate-50: #fdf2f8;
+            --color-slate-100: #fce7f3;
+            --color-zinc-50: #fff1f2;
+            --color-zinc-100: #ffe4e6;
+            --color-zinc-200: #fbcfe8;
+            --color-zinc-300: #f9a8d4;
+            --color-zinc-400: #ec4899;
+            --color-zinc-500: #db2777;
+            --color-zinc-600: #be185d;
+            --color-zinc-700: #1e3a8a;
+            --color-zinc-800: #172554;
+            --color-zinc-900: #1e3a8a;
+            --color-zinc-950: #172554;
+            
+            --color-red-50: #dbeafe;
+            --color-red-400: #60a5fa;
+            --color-red-500: #3b82f6;
+            --color-red-600: #2563eb;
+            --color-red-700: #1d4ed8;
+
+            --particle-color: rgba(59, 130, 246, 0.25);
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--color-slate-50);
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .kanban-column { min-height: 450px; }
+        .task-card { 
+            cursor: grab; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        .task-card:active { 
+            cursor: grabbing; 
+            transform: scale(0.96) rotate(1deg); 
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .hide { display: none !important; }
+        
+        /* Custom sleek scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--color-zinc-300); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--color-red-500); }
+
+        /* Ajustes de navegación por tema para dar máxima profundidad visual */
+        body.theme-dark nav { background: linear-gradient(to right, #0f172a, #1e293b, #0f172a) !important; border-color: #334155 !important; }
+        body.theme-black-purple nav { background: linear-gradient(to right, #000000, #1e1b4b, #000000) !important; border-color: #3b0764 !important; }
+        body.theme-green-purple nav { background: linear-gradient(to right, #022c22, #043e2f, #022c22) !important; border-color: #4c1d95 !important; }
+        body.theme-pink-blue nav { background: linear-gradient(to right, #db2777, #ec4899, #db2777) !important; border-color: #f472b6 !important; }
+
+        /* Estilo para el Canvas interactivo de fondo */
+        #theme-canvas-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        /* Asegurar que las vistas se rendericen por encima del canvas */
+        .interactive-container {
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body class="text-zinc-900 h-screen flex flex-col overflow-hidden antialiased theme-default">
+
+    <!-- Canvas de partículas interactivo en segundo plano -->
+    <canvas id="theme-canvas-bg"></canvas>
+
+    <!-- Navegación Superior -->
+    <nav class="bg-gradient-to-r from-zinc-950 via-zinc-900 to-zinc-950 text-white px-6 py-4 border-b border-zinc-800 shadow-lg flex flex-col md:flex-row justify-between items-center shrink-0 gap-4 md:gap-0 relative z-20">
+        <!-- Detalle decorativo superior -->
+        <div class="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-red-600 via-red-500 to-red-600"></div>
+        
+        <div class="flex flex-col sm:flex-row items-center gap-4 md:gap-8 w-full md:w-auto">
+            <!-- Logo interactivo -->
+            <div class="flex items-center gap-3 cursor-pointer select-none group" onclick="goToHome()">
+                <div class="bg-red-600/10 p-2 rounded-xl border border-red-500/20 group-hover:bg-red-600/20 transition-all duration-300">
+                    <i class="fa-solid fa-layer-group text-red-500 text-2xl group-hover:scale-110 transition-transform duration-300"></i>
+                </div>
+                <h1 class="text-2xl font-black tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-white via-zinc-100 to-zinc-300">SPROYETS</h1>
+            </div>
+            
+            <!-- Menú de pestañas -->
+            <div id="nav-menu" class="hide flex flex-wrap justify-center items-center gap-2 border-t sm:border-t-0 sm:border-l border-zinc-800 pt-2 sm:pt-0 sm:pl-8 text-sm font-medium">
+                <button id="nav-btn-my-projects" onclick="showMyProjects()" class="text-zinc-400 hover:text-white transition-all duration-200 py-2 px-4 rounded-xl flex items-center gap-2 hover:bg-zinc-900">
+                    <i class="fa-solid fa-folder-user"></i> Mis Proyectos
+                </button>
+                <button id="nav-btn-all-projects" onclick="showAllProjects()" class="text-zinc-400 hover:text-white transition-all duration-200 py-2 px-4 rounded-xl flex items-center gap-2 hover:bg-zinc-900">
+                    <i class="fa-solid fa-globe"></i> Lista de Proyectos
+                </button>
+                <button onclick="openModal('modal-project')" class="text-red-400 hover:text-red-300 transition-all duration-200 py-2 px-4 rounded-xl flex items-center gap-2 hover:bg-zinc-900/50">
+                    <i class="fa-solid fa-plus-circle"></i> Nuevo Proyecto
+                </button>
+            </div>
+        </div>
+        
+        <!-- Controles de la derecha: Selector de Temas + Perfil de Usuario -->
+        <div class="flex items-center gap-3 w-full md:w-auto justify-center sm:justify-end relative">
+            <!-- Dropdown Selector de Temas -->
+            <div class="relative inline-block text-left">
+                <button id="theme-dropdown-btn" onclick="toggleThemeDropdown(event)" class="text-zinc-300 hover:text-white font-semibold text-xs flex items-center gap-2 transition-colors duration-200 bg-zinc-900 hover:bg-zinc-800 py-2 px-3.5 rounded-xl border border-zinc-800">
+                    <i class="fa-solid fa-circle-half-stroke text-red-500 text-sm animate-pulse"></i> 
+                    <span>Paleta</span> 
+                    <i class="fa-solid fa-chevron-down text-[9px] text-zinc-500"></i>
+                </button>
+                <div id="theme-dropdown" class="hide absolute right-0 mt-2.5 w-48 rounded-2xl shadow-xl bg-white border border-zinc-200 text-zinc-800 py-2 z-50">
+                    <button onclick="setTheme('default')" class="w-full text-left px-4 py-2.5 text-xs font-bold hover:bg-zinc-100 flex items-center gap-2.5">
+                        <div class="w-3.5 h-3.5 rounded-full bg-red-500 border border-zinc-300"></div> Modo Claro
+                    </button>
+                    <button onclick="setTheme('dark')" class="w-full text-left px-4 py-2.5 text-xs font-bold hover:bg-zinc-100 flex items-center gap-2.5">
+                        <div class="w-3.5 h-3.5 rounded-full bg-slate-900 border border-zinc-300"></div> Modo Oscuro
+                    </button>
+                    <button onclick="setTheme('black-purple')" class="w-full text-left px-4 py-2.5 text-xs font-bold hover:bg-zinc-100 flex items-center gap-2.5">
+                        <div class="w-3.5 h-3.5 rounded-full bg-purple-700 border border-zinc-300"></div> Negro / Morado
+                    </button>
+                    <button onclick="setTheme('green-purple')" class="w-full text-left px-4 py-2.5 text-xs font-bold hover:bg-zinc-100 flex items-center gap-2.5">
+                        <div class="w-3.5 h-3.5 rounded-full bg-emerald-800 border border-purple-300"></div> Verde / Morado
+                    </button>
+                    <button onclick="setTheme('pink-blue')" class="w-full text-left px-4 py-2.5 text-xs font-bold hover:bg-zinc-100 flex items-center gap-2.5">
+                        <div class="w-3.5 h-3.5 rounded-full bg-pink-400 border border-blue-400"></div> Rosa / Azul
+                    </button>
+                </div>
+            </div>
+
+            <!-- Información de usuario e inicio de sesión -->
+            <div id="nav-user-info" class="hide flex items-center gap-3">
+                <div class="flex items-center gap-2 bg-zinc-900 py-1.5 px-3 rounded-full border border-zinc-800">
+                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span id="user-greeting" class="text-zinc-300 text-xs font-semibold"></span>
+                </div>
+                <button onclick="logout()" class="text-zinc-400 hover:text-red-400 font-semibold text-xs flex items-center gap-1.5 transition-colors duration-200 bg-zinc-900 hover:bg-red-950/20 py-1.5 px-3 rounded-xl border border-zinc-800 hover:border-red-900/30">
+                    <i class="fa-solid fa-sign-out-alt"></i> Salir
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CONTENEDOR PRINCIPAL INTERACTIVO -->
+    <main class="flex-1 flex flex-col overflow-hidden relative z-10 interactive-container">
+        
+        <!-- VISTA 1: Login / Registro -->
+        <div id="view-auth" class="flex-1 flex items-center justify-center overflow-y-auto p-6">
+            <div class="bg-white p-10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.05)] w-full max-w-md border border-zinc-100 relative overflow-hidden">
+                <!-- Barra decorativa superior -->
+                <div class="absolute top-0 left-0 right-0 h-[6px] bg-red-600"></div>
+                
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-black text-zinc-950 tracking-tight" id="auth-title">Iniciar Sesión</h2>
+                    <p class="text-zinc-500 text-sm mt-2">Organiza tus trabajos universitarios sin caos.</p>
+                </div>
+                
+                <form id="auth-form" onsubmit="handleAuth(event)" class="space-y-5">
+                    <div id="name-field" class="hide">
+                        <label class="block text-zinc-700 text-xs font-bold uppercase tracking-wider mb-2">Nombre Completo</label>
+                        <input type="text" id="auth-name" class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 transition-all text-sm" placeholder="Ej: Ana Gómez">
+                    </div>
+                    <div>
+                        <label class="block text-zinc-700 text-xs font-bold uppercase tracking-wider mb-2">Correo Electrónico</label>
+                        <input type="email" id="auth-email" required class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 transition-all text-sm" placeholder="estudiante@uni.edu">
+                    </div>
+                    <div>
+                        <label class="block text-zinc-700 text-xs font-bold uppercase tracking-wider mb-2">Contraseña</label>
+                        <input type="password" id="auth-pass" required class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 transition-all text-sm" placeholder="••••••••">
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 text-white font-bold py-3.5 px-4 rounded-2xl shadow-lg shadow-red-500/20 hover:shadow-red-500/30 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 text-sm tracking-wide">
+                        <span id="auth-btn-text">Entrar</span>
+                    </button>
+                    
+                    <div class="text-center pt-2">
+                        <a href="#" onclick="toggleAuthMode()" class="text-xs text-zinc-600 hover:text-red-600 font-semibold transition-colors duration-200" id="auth-toggle-link">¿No tienes cuenta? Regístrate aquí</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- VISTA 2: Dashboard de Mis Proyectos -->
+        <div id="view-dashboard" class="hide flex-1 overflow-y-auto p-6 md:p-10">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-10 gap-4">
+                    <div>
+                        <h2 class="text-3xl font-black text-zinc-950 tracking-tight border-l-4 border-red-600 pl-4">Mis Proyectos de Estudio</h2>
+                        <p class="text-zinc-500 text-sm mt-1">Proyectos creados y gestionados personalmente por ti o en los que colaboras.</p>
+                    </div>
+                    <button onclick="openModal('modal-project')" class="bg-gradient-to-r from-zinc-950 to-zinc-900 text-white px-6 py-3 rounded-2xl font-bold hover:bg-zinc-800 transition-all duration-300 flex items-center justify-center gap-2 self-start sm:self-auto shadow-lg shadow-zinc-950/10 transform hover:-translate-y-0.5 active:translate-y-0">
+                        <i class="fa-solid fa-plus text-red-500"></i>Nuevo Proyecto
+                    </button>
+                </div>
+                
+                <div id="projects-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Proyectos del usuario renderizados por JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA 4: Lista Completa de Proyectos (Todos los proyectos del sistema) -->
+        <div id="view-all-projects" class="hide flex-1 overflow-y-auto p-6 md:p-10">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between md:items-center mb-10 gap-6">
+                    <div>
+                        <h2 class="text-3xl font-black text-zinc-950 tracking-tight border-l-4 border-red-600 pl-4">Todos los Proyectos</h2>
+                        <p class="text-zinc-500 text-sm mt-1">Explora e inscríbete para colaborar en proyectos de la comunidad estudiantil.</p>
+                    </div>
+                    <!-- Buscador de proyectos -->
+                    <div class="relative w-full md:w-96">
+                        <input type="text" id="search-projects" oninput="filterAllProjects()" placeholder="Buscar proyecto..." class="w-full pl-11 pr-4 py-3 bg-white border border-zinc-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 text-sm shadow-sm transition-all duration-300">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-zinc-400"></i>
+                    </div>
+                </div>
+                
+                <div id="all-projects-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Todos los proyectos renderizados por JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA 3: Pizarra Kanban -->
+        <div id="view-board" class="hide flex-1 flex flex-col overflow-hidden bg-slate-100">
+            <!-- Subheader -->
+            <div class="bg-white px-6 py-4 border-b border-zinc-200/80 shadow-sm flex justify-between items-center shrink-0">
+                <div class="flex items-center gap-4">
+                    <button onclick="showMyProjects()" class="text-zinc-400 hover:text-zinc-950 transition-colors duration-200 bg-zinc-50 hover:bg-zinc-100 p-2.5 rounded-xl border border-zinc-200/50" title="Volver a mis proyectos">
+                        <i class="fa-solid fa-arrow-left text-lg"></i>
+                    </button>
+                    <div>
+                        <h2 id="board-project-title" class="text-2xl font-black text-zinc-950 tracking-tight">Título del Proyecto</h2>
+                        <p id="board-project-desc" class="text-zinc-500 text-xs hidden md:block mt-0.5">Descripción breve del proyecto</p>
+                    </div>
+                </div>
+                <button onclick="openModal('modal-task')" class="bg-gradient-to-r from-red-600 to-red-500 text-white px-5 py-2.5 rounded-2xl font-bold hover:from-red-500 hover:to-red-600 transition-all duration-300 shadow-md shadow-red-500/10 flex items-center gap-2">
+                    <i class="fa-solid fa-plus text-white text-sm"></i>Crear Tarea
+                </button>
+            </div>
+
+            <!-- Área del Kanban -->
+            <div class="flex-1 overflow-x-auto p-6">
+                <div class="flex gap-6 min-w-max h-full">
+                    
+                    <!-- Columna: Pendientes -->
+                    <div class="w-80 flex flex-col bg-zinc-100/50 rounded-2xl border border-zinc-200/50 shadow-sm backdrop-blur-sm">
+                        <div class="p-4 bg-zinc-200/30 rounded-t-2xl font-bold text-zinc-800 border-b border-zinc-200/50 flex justify-between items-center">
+                            <span class="flex items-center gap-2 text-sm uppercase tracking-wider text-zinc-600 font-extrabold"><i class="fa-solid fa-circle text-[8px] text-zinc-400"></i> Pendientes</span>
+                            <span id="count-pendiente" class="bg-white text-zinc-600 text-xs font-bold px-2.5 py-1 rounded-full border border-zinc-200">0</span>
+                        </div>
+                        <div id="col-pendiente" class="kanban-column flex-1 p-3 overflow-y-auto space-y-3" ondrop="drop(event, 'pendiente')" ondragover="allowDrop(event)">
+                            <!-- Tareas -->
+                        </div>
+                    </div>
+
+                    <!-- Columna: En Progreso -->
+                    <div class="w-80 flex flex-col bg-zinc-100/50 rounded-2xl border border-zinc-200/50 shadow-sm backdrop-blur-sm">
+                        <div class="p-4 bg-zinc-200/30 rounded-t-2xl font-bold text-zinc-800 border-b border-zinc-200/50 flex justify-between items-center">
+                            <span class="flex items-center gap-2 text-sm uppercase tracking-wider text-zinc-700 font-extrabold"><i class="fa-solid fa-circle text-[8px] text-red-500"></i> En Progreso</span>
+                            <span id="count-en_progreso" class="bg-red-500 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">0</span>
+                        </div>
+                        <div id="col-en_progreso" class="kanban-column flex-1 p-3 overflow-y-auto space-y-3" ondrop="drop(event, 'en_progreso')" ondragover="allowDrop(event)">
+                            <!-- Tareas -->
+                        </div>
+                    </div>
+
+                    <!-- Columna: Completadas -->
+                    <div class="w-80 flex flex-col bg-zinc-100/50 rounded-2xl border border-zinc-200/50 shadow-sm backdrop-blur-sm">
+                        <div class="p-4 bg-zinc-200/30 rounded-t-2xl font-bold text-zinc-800 border-b border-zinc-200/50 flex justify-between items-center">
+                            <span class="flex items-center gap-2 text-sm uppercase tracking-wider text-zinc-700 font-extrabold"><i class="fa-solid fa-circle text-[8px] text-emerald-500 animate-pulse"></i> Completadas</span>
+                            <span id="count-completada" class="bg-emerald-500 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">0</span>
+                        </div>
+                        <div id="col-completada" class="kanban-column flex-1 p-3 overflow-y-auto space-y-3" ondrop="drop(event, 'completada')" ondragover="allowDrop(event)">
+                            <!-- Tareas -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modales refinados -->
+
+    <!-- Modal: Crear Proyecto -->
+    <div id="modal-project" class="hide fixed inset-0 bg-zinc-950/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden border border-zinc-100 transform transition-all duration-300">
+            <div class="bg-gradient-to-r from-zinc-950 to-zinc-900 p-5 flex justify-between items-center text-white border-b border-zinc-800 relative">
+                <div class="absolute top-0 left-0 right-0 h-[3px] bg-red-600"></div>
+                <h3 class="font-bold text-lg tracking-tight">Crear Nuevo Proyecto</h3>
+                <button onclick="closeModal('modal-project')" class="text-zinc-400 hover:text-white transition-colors duration-200 bg-zinc-800/50 hover:bg-zinc-800 p-1.5 rounded-lg"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <form onsubmit="handleCreateProject(event)" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-zinc-700 text-xs font-bold uppercase tracking-wider mb-2">Nombre del Proyecto</label>
+                    <input type="text" id="proj-name" required class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 transition-all text-sm">
+                </div>
+                <div>
+                    <label class="block text-zinc-700 text-xs font-bold uppercase tracking-wider mb-2">Descripción</label>
+                    <textarea id="proj-desc" rows="3" class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 transition-all text-sm" placeholder="Detalla el alcance de este proyecto universitario..."></textarea>
+                </div>
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" onclick="closeModal('modal-project')" class="px-5 py-2.5 bg-zinc-100 text-zinc-800 rounded-xl hover:bg-zinc-200 transition font-semibold text-sm">Cancelar</button>
+                    <button type="submit" class="px-6 py-2.5 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 shadow-md shadow-red-500/10 transition text-sm">Crear Proyecto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Crear Tarea -->
+    <div id="modal-task" class="hide fixed inset-0 bg-zinc-950/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden border border-zinc-100 transform transition-all duration-300">
+            <div class="p-5 flex justify-between items-center border-b border-zinc-200/80 relative">
+                <div class="absolute top-0 left-0 right-0 h-[4px] bg-red-600"></div>
+                <h3 class="font-bold text-lg text-zinc-950 tracking-tight">Nueva Tarea</h3>
+                <button onclick="closeModal('modal-task')" class="text-zinc-400 hover:text-zinc-950 transition-colors duration-200 bg-zinc-100 hover:bg-zinc-200 p-1.5 rounded-lg"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <form onsubmit="handleCreateTask(event)" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-zinc-700 text-xs font-bold uppercase tracking-wider mb-2">Título de la Tarea</label>
+                    <input type="text" id="task-title" required class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 transition-all text-sm" placeholder="Ej: Redactar Introducción">
+                </div>
+                <div>
+                    <label class="block text-zinc-700 text-xs font-bold uppercase tracking-wider mb-2">Descripción</label>
+                    <textarea id="task-desc" rows="2" class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 transition-all text-sm" placeholder="Escribe los detalles e instrucciones de entrega..."></textarea>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-zinc-700 text-xs font-bold uppercase tracking-wider mb-2">Fecha Entrega</label>
+                        <input type="date" id="task-date" required class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 transition-all text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-zinc-700 text-xs font-bold uppercase tracking-wider mb-2">Asignar a</label>
+                        <select id="task-assign" class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-600 transition-all text-sm">
+                            <option value="">Sin asignar</option>
+                            <!-- Usuarios inyectados por JS -->
+                        </select>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 pt-4">
+                    <button type="button" onclick="closeModal('modal-task')" class="px-5 py-2.5 bg-zinc-100 text-zinc-800 rounded-xl text-sm font-bold hover:bg-zinc-200 transition-colors">Cancelar</button>
+                    <button type="submit" class="px-5 py-2.5 bg-zinc-950 text-white rounded-xl text-sm font-bold hover:bg-zinc-800 shadow-md shadow-zinc-950/10 transition-colors">Guardar Tarea</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contenedor premium para notificaciones flotantes con glassmorphic blur -->
+    <div id="custom-toast" class="hide fixed bottom-5 right-5 bg-zinc-950/90 backdrop-blur-md text-white px-6 py-4 rounded-2xl shadow-2xl border border-zinc-800 transition-all duration-300 transform translate-y-10 opacity-0 z-50 flex items-center gap-3">
+        <div class="bg-red-500/10 p-2 rounded-xl border border-red-500/20">
+            <i class="fa-solid fa-circle-info text-red-500" id="toast-icon"></i>
+        </div>
+        <span id="toast-message" class="text-sm font-medium">Mensaje de alerta</span>
+    </div>
+
+    <!-- Modal para confirmaciones de diseño minimalista moderno -->
+    <div id="custom-confirm" class="hide fixed inset-0 bg-zinc-950/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden border border-zinc-100 p-6 space-y-5 transform transition-all duration-300 scale-95 opacity-0" id="confirm-box">
+            <div class="flex items-center gap-3">
+                <div class="bg-red-50 p-3 rounded-2xl text-red-500 text-lg">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div>
+                    <h4 class="font-extrabold text-zinc-950 text-base" id="confirm-title">¿Confirmar Acción?</h4>
+                    <p class="text-xs text-zinc-500 mt-0.5" id="confirm-desc">Esta acción no se puede deshacer de forma sencilla.</p>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3.5">
+                <button type="button" id="confirm-cancel-btn" class="px-4 py-2 bg-zinc-100 text-zinc-800 font-bold text-xs rounded-xl hover:bg-zinc-200 transition-all">Cancelar</button>
+                <button type="button" id="confirm-ok-btn" class="px-4 py-2 bg-red-600 text-white font-bold text-xs rounded-xl hover:bg-red-700 shadow-md shadow-red-500/10 transition-all">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGICA DE CONTROL DE LA APLICACIÓN -->
+    <script>
+        // --- ESTADO GLOBAL DE LA APLICACIÓN ---
+        let state = {
+            currentUser: null,
+            users: JSON.parse(localStorage.getItem('sproyets_users')) || [
+                { id: 'usr-1', name: 'Ana Gómez', email: 'ana@uni.edu', pass: '123' },
+                { id: 'usr-2', name: 'Carlos Díaz', email: 'carlos@uni.edu', pass: '123' },
+                { id: 'usr-3', name: 'Sofía Martínez', email: 'sofia@uni.edu', pass: '123' }
+            ],
+            projects: JSON.parse(localStorage.getItem('sproyets_projects')) || [
+                { 
+                    id: 'proj-demo-1', 
+                    name: 'Tesis de Grado - Ingeniería de Software', 
+                    desc: 'Proyecto de investigación y desarrollo para el sistema de control académico de la facultad de ciencias.', 
+                    owner: 'usr-1',
+                    collaborators: ['usr-2', 'usr-3']
+                },
+                { 
+                    id: 'proj-demo-2', 
+                    name: 'Compilador en Python', 
+                    desc: 'Diseño e implementación de un analizador sintáctico y semántico para un subconjunto de lenguaje C++.', 
+                    owner: 'usr-2',
+                    collaborators: ['usr-1']
+                },
+                { 
+                    id: 'proj-demo-3', 
+                    name: 'App de Telemedicina Interactiva', 
+                    desc: 'Prototipo de aplicación móvil de salud preventiva utilizando metodologías ágiles Scrum.', 
+                    owner: 'usr-3',
+                    collaborators: []
+                }
+            ],
+            tasks: JSON.parse(localStorage.getItem('sproyets_tasks')) || [
+                { id: 'task-1', projectId: 'proj-demo-1', title: 'Redactar Introducción', desc: 'Escribir la justificación y planteamiento del problema del estudio.', date: '2026-06-20', assignTo: 'usr-1', status: 'pendiente' },
+                { id: 'task-2', projectId: 'proj-demo-1', title: 'Diseñar Mockups del UI', desc: 'Crear vistas de administración de usuarios y calendario.', date: '2026-06-15', assignTo: 'usr-2', status: 'en_progreso' },
+                { id: 'task-3', projectId: 'proj-demo-1', title: 'Entregar Marco Teórico', desc: 'Revision final con el tutor metodológico de las bases científicas.', date: '2026-06-10', assignTo: 'usr-3', status: 'completada' },
+                { id: 'task-4', projectId: 'proj-demo-2', title: 'Implementar Lexer', desc: 'Completar el análisis de lexemas numéricos e identificadores.', date: '2026-06-18', assignTo: 'usr-2', status: 'en_progreso' }
+            ],
+            currentProject: null,
+            draggedTaskId: null,
+            isRegisterMode: false
+        };
+
+        // --- SISTEMA DE NOTIFICACIONES ---
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('custom-toast');
+            const msgEl = document.getElementById('toast-message');
+            const iconEl = document.getElementById('toast-icon');
+
+            msgEl.textContent = message;
+            if(type === 'success') {
+                iconEl.className = 'fa-solid fa-circle-check text-emerald-500';
+            } else if(type === 'error') {
+                iconEl.className = 'fa-solid fa-triangle-exclamation text-red-500';
+            } else {
+                iconEl.className = 'fa-solid fa-circle-info text-blue-500';
+            }
+
+            toast.classList.remove('hide');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-10', 'opacity-0');
+            }, 50);
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-10', 'opacity-0');
+                setTimeout(() => toast.classList.add('hide'), 300);
+            }, 3000);
+        }
+
+        // --- MODAL DE CONFIRMACIÓN PERSOANLIZADO ---
+        let activeConfirmCallback = null;
+        function customConfirm(title, desc, onConfirm) {
+            const modal = document.getElementById('custom-confirm');
+            const box = document.getElementById('confirm-box');
+            document.getElementById('confirm-title').textContent = title;
+            document.getElementById('confirm-desc').textContent = desc;
+
+            modal.classList.remove('hide');
+            setTimeout(() => {
+                box.classList.remove('scale-95', 'opacity-0');
+            }, 50);
+
+            activeConfirmCallback = onConfirm;
+        }
+
+        document.getElementById('confirm-cancel-btn').onclick = () => closeConfirmModal();
+        document.getElementById('confirm-ok-btn').onclick = () => {
+            if (activeConfirmCallback) activeConfirmCallback();
+            closeConfirmModal();
+        };
+
+        function closeConfirmModal() {
+            const modal = document.getElementById('custom-confirm');
+            const box = document.getElementById('confirm-box');
+            box.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hide');
+                activeConfirmCallback = null;
+            }, 250);
+        }
+
+        // --- MANEJO DE VISTAS ---
+        function switchView(viewId) {
+            ['view-auth', 'view-dashboard', 'view-all-projects', 'view-board'].forEach(id => {
+                document.getElementById(id).classList.add('hide');
+            });
+            document.getElementById(viewId).classList.remove('hide');
+
+            // Actualizar estados del navbar
+            const btns = {
+                'nav-btn-my-projects': viewId === 'view-dashboard',
+                'nav-btn-all-projects': viewId === 'view-all-projects'
+            };
+            for(let btnId in btns) {
+                const el = document.getElementById(btnId);
+                if(el) {
+                    if(btns[btnId]) {
+                        el.classList.add('text-white', 'bg-zinc-900', 'border', 'border-zinc-800');
+                        el.classList.remove('text-zinc-400');
+                    } else {
+                        el.classList.remove('text-white', 'bg-zinc-900', 'border', 'border-zinc-800');
+                        el.classList.add('text-zinc-400');
+                    }
+                }
+            }
+        }
+
+        function showMyProjects() {
+            renderMyProjects();
+            switchView('view-dashboard');
+        }
+
+        function showAllProjects() {
+            renderAllProjects();
+            switchView('view-all-projects');
+        }
+
+        function goToHome() {
+            if (state.currentUser) {
+                showMyProjects();
+            } else {
+                switchView('view-auth');
+            }
+        }
+
+        // --- SISTEMA DE AUTENTICACIÓN ---
+        function toggleAuthMode() {
+            state.isRegisterMode = !state.isRegisterMode;
+            const title = document.getElementById('auth-title');
+            const btnText = document.getElementById('auth-btn-text');
+            const toggleLink = document.getElementById('auth-toggle-link');
+            const nameField = document.getElementById('name-field');
+
+            if(state.isRegisterMode) {
+                title.textContent = 'Registrarse';
+                btnText.textContent = 'Crear Cuenta';
+                toggleLink.textContent = '¿Ya tienes cuenta? Inicia sesión';
+                nameField.classList.remove('hide');
+            } else {
+                title.textContent = 'Iniciar Sesión';
+                btnText.textContent = 'Entrar';
+                toggleLink.textContent = '¿No tienes cuenta? Regístrate aquí';
+                nameField.classList.add('hide');
+            }
+        }
+
+        function handleAuth(event) {
+            event.preventDefault();
+            const email = document.getElementById('auth-email').value.trim();
+            const pass = document.getElementById('auth-pass').value;
+
+            if(state.isRegisterMode) {
+                const name = document.getElementById('auth-name').value.trim();
+                if(!name || !email || !pass) {
+                    showToast('Completa todos los campos obligatorios.', 'error');
+                    return;
+                }
+                const exists = state.users.some(u => u.email === email);
+                if(exists) {
+                    showToast('Este correo ya está registrado.', 'error');
+                    return;
+                }
+                const newUser = { id: 'usr-' + Date.now(), name, email, pass };
+                state.users.push(newUser);
+                localStorage.setItem('sproyets_users', JSON.stringify(state.users));
+                state.currentUser = newUser;
+                showToast(`¡Cuenta creada con éxito! Bienvenido, ${name}.`, 'success');
+            } else {
+                const user = state.users.find(u => u.email === email && u.pass === pass);
+                if(!user) {
+                    showToast('Credenciales incorrectas.', 'error');
+                    return;
+                }
+                state.currentUser = user;
+                showToast(`¡Bienvenido de vuelta, ${user.name}!`, 'success');
+            }
+
+            // Actualizar interfaz posterior al login
+            document.getElementById('nav-menu').classList.remove('hide');
+            document.getElementById('nav-user-info').classList.remove('hide');
+            document.getElementById('user-greeting').textContent = state.currentUser.name;
+            document.getElementById('auth-form').reset();
+            
+            showMyProjects();
+        }
+
+        function logout() {
+            customConfirm('Cerrar Sesión', '¿Estás seguro de que quieres salir del sistema?', () => {
+                state.currentUser = null;
+                document.getElementById('nav-menu').classList.add('hide');
+                document.getElementById('nav-user-info').classList.add('hide');
+                switchView('view-auth');
+                showToast('Sesión cerrada correctamente.', 'info');
+            });
+        }
+
+        // --- DROPDOWN Y PALETAS DE COLORES ---
+        function toggleThemeDropdown(e) {
+            e.stopPropagation();
+            document.getElementById('theme-dropdown').classList.toggle('hide');
+        }
+
+        function setTheme(theme) {
+            document.body.className = "text-zinc-900 h-screen flex flex-col overflow-hidden antialiased";
+            if (theme !== 'default') {
+                document.body.classList.add('theme-' + theme);
+            }
+            localStorage.setItem('sproyets_theme', theme);
+            document.getElementById('theme-dropdown').classList.add('hide');
+            showToast(`Tema cambiado con éxito.`, 'success');
+        }
+
+        // Cerrar dropdown de temas al hacer clic fuera
+        window.addEventListener('click', () => {
+            const dropdown = document.getElementById('theme-dropdown');
+            if(dropdown) dropdown.classList.add('hide');
+        });
+
+        // --- SISTEMA DE PROYECTOS (RENDER) ---
+        function getUserName(userId) {
+            const user = state.users.find(u => u.id === userId);
+            return user ? user.name : 'Usuario Desconocido';
+        }
+
+        function getCollaboratorsList(project) {
+            if(!project.collaborators || project.collaborators.length === 0) return 'Sin colaboradores';
+            return project.collaborators.map(id => getUserName(id)).join(', ');
+        }
+
+        function renderMyProjects() {
+            const container = document.getElementById('projects-container');
+            container.innerHTML = '';
+
+            const myProjects = state.projects.filter(p => 
+                p.owner === state.currentUser.id || p.collaborators.includes(state.currentUser.id)
+            );
+
+            if(myProjects.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full bg-white/70 backdrop-blur-sm p-12 rounded-3xl text-center border border-zinc-100">
+                        <i class="fa-solid fa-folder-open text-5xl text-zinc-300 mb-4"></i>
+                        <h4 class="font-bold text-lg text-zinc-950">No hay proyectos asignados</h4>
+                        <p class="text-zinc-500 text-sm mt-1 max-w-sm mx-auto">No eres dueño ni colaborador de ningún proyecto. ¡Crea uno nuevo o busca colaboraciones en la lista de la comunidad!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            myProjects.forEach(p => {
+                const isOwner = p.owner === state.currentUser.id;
+                const totalTasks = state.tasks.filter(t => t.projectId === p.id).length;
+                const completedTasks = state.tasks.filter(t => t.projectId === p.id && t.status === 'completada').length;
+                const percent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+                const card = document.createElement('div');
+                card.className = "bg-white p-6 rounded-3xl shadow-sm border border-zinc-100 flex flex-col justify-between hover:shadow-xl hover:scale-[1.02] hover:border-zinc-200 transition-all duration-300 relative group";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start gap-4 mb-4">
+                            <span class="text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full ${isOwner ? 'bg-red-50 text-red-600 border border-red-200/50' : 'bg-zinc-100 text-zinc-600'}">
+                                ${isOwner ? '<i class="fa-solid fa-crown mr-1"></i> Propietario' : 'Colaborador'}
+                            </span>
+                            ${isOwner ? `
+                                <button onclick="deleteProject(event, '${p.id}')" class="text-zinc-400 hover:text-red-500 p-2 rounded-lg hover:bg-red-50 transition-colors opacity-0 group-hover:opacity-100" title="Eliminar proyecto">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                        <h3 class="font-extrabold text-lg text-zinc-950 line-clamp-2 cursor-pointer hover:text-red-600 transition-colors" onclick="openProjectBoard('${p.id}')">${p.name}</h3>
+                        <p class="text-zinc-500 text-xs mt-2 line-clamp-3 leading-relaxed">${p.desc || 'Sin descripción disponible.'}</p>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-zinc-100">
+                        <div class="flex justify-between items-center text-xs text-zinc-500 mb-2 font-medium">
+                            <span>Progreso General</span>
+                            <span class="font-bold text-zinc-950">${percent}% (${completedTasks}/${totalTasks})</span>
+                        </div>
+                        <div class="w-full bg-zinc-100 h-2 rounded-full overflow-hidden mb-4">
+                            <div class="bg-red-500 h-full transition-all duration-500" style="width: ${percent}%"></div>
+                        </div>
+                        <button onclick="openProjectBoard('${p.id}')" class="w-full py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl font-bold text-xs hover:bg-zinc-950 hover:text-white hover:border-zinc-950 transition-all duration-300 flex items-center justify-center gap-2">
+                            Ir a la Pizarra <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderAllProjects(filterText = '') {
+            const container = document.getElementById('all-projects-container');
+            container.innerHTML = '';
+
+            let filtered = state.projects;
+            if(filterText) {
+                filtered = state.projects.filter(p => 
+                    p.name.toLowerCase().includes(filterText.toLowerCase()) || 
+                    p.desc.toLowerCase().includes(filterText.toLowerCase())
+                );
+            }
+
+            if(filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full bg-white/70 backdrop-blur-sm p-12 rounded-3xl text-center border border-zinc-100">
+                        <i class="fa-solid fa-circle-question text-5xl text-zinc-300 mb-4"></i>
+                        <h4 class="font-bold text-lg text-zinc-950">No se encontraron proyectos</h4>
+                        <p class="text-zinc-500 text-sm mt-1 max-w-xs mx-auto">No existen proyectos que cumplan con los criterios de búsqueda.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(p => {
+                const isMyProject = p.owner === state.currentUser.id || p.collaborators.includes(state.currentUser.id);
+                const isCollaborator = p.collaborators.includes(state.currentUser.id);
+                const ownerName = getUserName(p.owner);
+
+                const card = document.createElement('div');
+                card.className = "bg-white p-6 rounded-3xl shadow-sm border border-zinc-100 flex flex-col justify-between hover:shadow-xl transition-all duration-300";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-[10px] font-extrabold uppercase tracking-widest text-zinc-400">Creador: ${ownerName}</span>
+                            ${isMyProject ? `
+                                <span class="bg-zinc-100 text-zinc-600 text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full border border-zinc-200/40">Inscrito</span>
+                            ` : ''}
+                        </div>
+                        <h3 class="font-extrabold text-lg text-zinc-950 line-clamp-2">${p.name}</h3>
+                        <p class="text-zinc-500 text-xs mt-2 line-clamp-3 leading-relaxed">${p.desc || 'Sin descripción disponible.'}</p>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-zinc-100">
+                        <p class="text-[11px] text-zinc-400 font-medium mb-4 flex items-center gap-1">
+                            <i class="fa-solid fa-users"></i> ${getCollaboratorsList(p)}
+                        </p>
+                        ${isMyProject ? `
+                            <button onclick="openProjectBoard('${p.id}')" class="w-full py-2.5 bg-red-600 text-white rounded-xl font-bold text-xs hover:bg-red-700 transition-colors shadow-md shadow-red-500/10">
+                                Ver mi Pizarra de Trabajo
+                            </button>
+                        ` : `
+                            <button onclick="joinProject('${p.id}')" class="w-full py-2.5 bg-zinc-950 text-white hover:bg-zinc-800 rounded-xl font-bold text-xs transition-colors flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-user-plus text-[10px]"></i> Unirme como Colaborador
+                            </button>
+                        `}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterAllProjects() {
+            const q = document.getElementById('search-projects').value;
+            renderAllProjects(q);
+        }
+
+        // --- ACCIONES DE PROYECTOS ---
+        function handleCreateProject(event) {
+            event.preventDefault();
+            const name = document.getElementById('proj-name').value.trim();
+            const desc = document.getElementById('proj-desc').value.trim();
+
+            if(!name) return;
+
+            const newProj = {
+                id: 'proj-' + Date.now(),
+                name,
+                desc,
+                owner: state.currentUser.id,
+                collaborators: []
+            };
+
+            state.projects.push(newProj);
+            localStorage.setItem('sproyets_projects', JSON.stringify(state.projects));
+
+            closeModal('modal-project');
+            document.getElementById('proj-name').value = '';
+            document.getElementById('proj-desc').value = '';
+
+            showToast('¡Proyecto creado correctamente!', 'success');
+            showMyProjects();
+        }
+
+        function deleteProject(event, projectId) {
+            event.stopPropagation();
+            customConfirm(
+                'Eliminar Proyecto', 
+                '¿Estás seguro de eliminar este proyecto universitario? Se perderán todas las tareas asociadas.', 
+                () => {
+                    state.projects = state.projects.filter(p => p.id !== projectId);
+                    state.tasks = state.tasks.filter(t => t.projectId !== projectId);
+
+                    localStorage.setItem('sproyets_projects', JSON.stringify(state.projects));
+                    localStorage.setItem('sproyets_tasks', JSON.stringify(state.tasks));
+
+                    showToast('Proyecto eliminado.', 'info');
+                    showMyProjects();
+                }
+            );
+        }
+
+        function joinProject(projectId) {
+            const project = state.projects.find(p => p.id === projectId);
+            if(!project) return;
+
+            project.collaborators = project.collaborators || [];
+            project.collaborators.push(state.currentUser.id);
+
+            localStorage.setItem('sproyets_projects', JSON.stringify(state.projects));
+            showToast('¡Te has unido al proyecto con éxito!', 'success');
+            showMyProjects();
+        }
+
+        // --- MODALES (GENERAL) ---
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if(!modal) return;
+            
+            modal.classList.remove('hide');
+            // Si es el modal de tarea, cargar dinámicamente colaboradores asignables
+            if(id === 'modal-task' && state.currentProject) {
+                populateAssigneeDropdown();
+            }
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if(modal) modal.classList.add('hide');
+        }
+
+        function populateAssigneeDropdown() {
+            const select = document.getElementById('task-assign');
+            select.innerHTML = '<option value="">Sin asignar</option>';
+
+            const proj = state.currentProject;
+            if(!proj) return;
+
+            // Integrantes asignables: el propietario y los colaboradores inscritos
+            const ids = [proj.owner, ...(proj.collaborators || [])];
+            ids.forEach(id => {
+                const user = state.users.find(u => u.id === id);
+                if(user) {
+                    const opt = document.createElement('option');
+                    opt.value = user.id;
+                    opt.textContent = user.name;
+                    select.appendChild(opt);
+                }
+            });
+        }
+
+        // --- SISTEMA KANBAN Y PIZARRA ---
+        function openProjectBoard(projectId) {
+            const proj = state.projects.find(p => p.id === projectId);
+            if(!proj) return;
+
+            state.currentProject = proj;
+            document.getElementById('board-project-title').textContent = proj.name;
+            document.getElementById('board-project-desc').textContent = proj.desc || 'Sin descripción';
+
+            renderKanban();
+            switchView('view-board');
+        }
+
+        function renderKanban() {
+            const colPendiente = document.getElementById('col-pendiente');
+            const colProgreso = document.getElementById('col-en_progreso');
+            const colCompletada = document.getElementById('col-completada');
+
+            colPendiente.innerHTML = '';
+            colProgreso.innerHTML = '';
+            colCompletada.innerHTML = '';
+
+            const projectTasks = state.tasks.filter(t => t.projectId === state.currentProject.id);
+
+            let counts = { pendiente: 0, en_progreso: 0, completada: 0 };
+
+            projectTasks.forEach(task => {
+                const assigneeName = task.assignTo ? getUserName(task.assignTo) : 'Sin asignar';
+                const dateParts = task.date ? task.date.split('-') : [];
+                const formattedDate = dateParts.length === 3 ? `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}` : 'Sin fecha';
+
+                const card = document.createElement('div');
+                card.className = "task-card bg-white p-4.5 rounded-2xl border border-zinc-200/80 shadow-sm relative group";
+                card.draggable = true;
+                card.setAttribute('ondragstart', `drag(event, '${task.id}')`);
+                card.innerHTML = `
+                    <div class="flex justify-between items-start gap-4 mb-2">
+                        <h4 class="font-extrabold text-sm text-zinc-950 group-hover:text-red-600 transition-colors leading-snug">${task.title}</h4>
+                        <button onclick="deleteTask('${task.id}')" class="text-zinc-400 hover:text-red-500 p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity" title="Eliminar tarea">
+                            <i class="fa-solid fa-trash text-xs"></i>
+                        </button>
+                    </div>
+                    <p class="text-zinc-500 text-xs leading-relaxed mb-4 line-clamp-3">${task.desc || 'Sin descripción.'}</p>
+                    <div class="flex items-center justify-between gap-2 border-t border-zinc-100 pt-3">
+                        <span class="text-[10px] text-zinc-400 font-bold flex items-center gap-1 bg-zinc-50 border border-zinc-200 px-2.5 py-1 rounded-lg">
+                            <i class="fa-regular fa-calendar-days text-[9px]"></i> ${formattedDate}
+                        </span>
+                        <div class="flex items-center gap-1.5" title="${assigneeName}">
+                            <div class="w-5.5 h-5.5 bg-red-500 text-white rounded-full flex items-center justify-center text-[10px] font-black border border-white shadow-sm px-1.5 py-0.5">
+                                ${task.assignTo ? getInitials(assigneeName) : '?'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                if(task.status === 'pendiente') {
+                    colPendiente.appendChild(card);
+                    counts.pendiente++;
+                } else if(task.status === 'en_progreso') {
+                    colProgreso.appendChild(card);
+                    counts.en_progreso++;
+                } else if(task.status === 'completada') {
+                    colCompletada.appendChild(card);
+                    counts.completada++;
+                }
+            });
+
+            // Actualizar contadores
+            document.getElementById('count-pendiente').textContent = counts.pendiente;
+            document.getElementById('count-en_progreso').textContent = counts.en_progreso;
+            document.getElementById('count-completada').textContent = counts.completada;
+        }
+
+        function getInitials(name) {
+            return name.split(' ').map(p => p[0]).slice(0,2).join('').toUpperCase();
+        }
+
+        // --- DRAG AND DROP LÓGICA ---
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev, taskId) {
+            state.draggedTaskId = taskId;
+        }
+
+        function drop(ev, columnStatus) {
+            ev.preventDefault();
+            if(!state.draggedTaskId) return;
+
+            const task = state.tasks.find(t => t.id === state.draggedTaskId);
+            if(task && task.status !== columnStatus) {
+                task.status = columnStatus;
+                localStorage.setItem('sproyets_tasks', JSON.stringify(state.tasks));
+                renderKanban();
+                showToast(`Tarea movida a: ${columnStatus.replace('_', ' ').toUpperCase()}`, 'info');
+            }
+            state.draggedTaskId = null;
+        }
+
+        // --- CREAR Y ELIMINAR TAREAS ---
+        function handleCreateTask(event) {
+            event.preventDefault();
+            const title = document.getElementById('task-title').value.trim();
+            const desc = document.getElementById('task-desc').value.trim();
+            const date = document.getElementById('task-date').value;
+            const assignTo = document.getElementById('task-assign').value;
+
+            if(!title || !date) return;
+
+            const newTask = {
+                id: 'task-' + Date.now(),
+                projectId: state.currentProject.id,
+                title,
+                desc,
+                date,
+                assignTo: assignTo || null,
+                status: 'pendiente'
+            };
+
+            state.tasks.push(newTask);
+            localStorage.setItem('sproyets_tasks', JSON.stringify(state.tasks));
+
+            closeModal('modal-task');
+            document.getElementById('task-title').value = '';
+            document.getElementById('task-desc').value = '';
+            document.getElementById('task-date').value = '';
+            document.getElementById('task-assign').value = '';
+
+            showToast('Tarea agregada con éxito.', 'success');
+            renderKanban();
+        }
+
+        function deleteTask(taskId) {
+            customConfirm(
+                'Eliminar Tarea', 
+                '¿Quieres eliminar esta tarea del proyecto definitivamente?', 
+                () => {
+                    state.tasks = state.tasks.filter(t => t.id !== taskId);
+                    localStorage.setItem('sproyets_tasks', JSON.stringify(state.tasks));
+                    showToast('Tarea eliminada del tablero.', 'info');
+                    renderKanban();
+                }
+            );
+        }
+
+        // --- SISTEMA DE PARTÍCULAS INTERACTIVAS (CANVAS BACKGROUND) ---
+        const canvas = document.getElementById('theme-canvas-bg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 120 };
+
+        function initParticles() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            
+            const numberOfParticles = Math.min(Math.floor((canvas.width * canvas.height) / 12000), 75);
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.45,
+                    vy: (Math.random() - 0.5) * 0.45,
+                    radius: Math.random() * 3 + 1.5
+                });
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Obtener dinámicamente el color de partícula según la paleta activa
+            const tempDiv = document.createElement('div');
+            tempDiv.style.color = 'var(--particle-color)';
+            document.body.appendChild(tempDiv);
+            const particleColorString = getComputedStyle(tempDiv).color || 'rgba(239, 68, 68, 0.15)';
+            document.body.removeChild(tempDiv);
+
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+
+                // Rebotar en los bordes
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                // Atracción al ratón interactiva
+                if(mouse.x && mouse.y) {
+                    let dx = mouse.x - p.x;
+                    let dy = mouse.y - p.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < mouse.radius) {
+                        const force = (mouse.radius - distance) / mouse.radius;
+                        p.x -= dx * force * 0.02;
+                        p.y -= dy * force * 0.02;
+                    }
+                }
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = particleColorString;
+                ctx.fill();
+            });
+
+            // Dibujar lineas de conexión tenues
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a + 1; b < particles.length; b++) {
+                    let dist = Math.sqrt(
+                        Math.pow(particles[a].x - particles[b].x, 2) + 
+                        Math.pow(particles[a].y - particles[b].y, 2)
+                    );
+                    if (dist < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.strokeStyle = particleColorString.replace(/[\d\.]+\)$/g, `${(1 - dist/150) * 0.12})`);
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.addEventListener('resize', () => {
+            initParticles();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
+
+        window.addEventListener('mouseout', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        // --- EVENTO DE INICIO DE LA APP ---
+        window.onload = function() {
+            // Inicializar tema guardado
+            const savedTheme = localStorage.getItem('sproyets_theme') || 'default';
+            setTheme(savedTheme);
+
+            // Iniciar partículas
+            initParticles();
+            animateParticles();
+        };
+    </script>
+<script src="script.js"></script>
+</body>
+</html>
